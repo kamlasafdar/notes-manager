@@ -37,16 +37,6 @@ npm install react-icons react-toastify
 npm run dev
 ```
 
-**Libraries Used**
-Backend
-express
-mongoose
-dotenv
-cors
-jsonwebtoken
-**Frontend**
-react-icons
-react-toastify
 
    
    
