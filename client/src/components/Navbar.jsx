@@ -14,7 +14,6 @@ const Navbar = () => {
   }, [darkMode]);
 
   return (
-    // <nav className="fixed top-0 left-0 w-full bg-gray-900 dark:bg-gray-800 text-white p-4 shadow-md z-50">
     <nav className="fixed top-0 left-0 w-full p-4
       bg-white/30 backdrop-blur-md text-gray-900 shadow-md
       dark:bg-gray-900 dark:text-white dark:shadow-lg"

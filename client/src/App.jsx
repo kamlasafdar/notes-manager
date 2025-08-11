@@ -47,8 +47,8 @@ export default function AuthForm() {
       const data = await res.json();
 
       if (res.ok) {
+        localStorage.setItem('token', data.token);  // <-- Save token here
         setIsLoggedIn(true);
-        // You can save token or user info here if needed
       } else {
         alert(data.message || "Login failed");
       }
@@ -56,6 +56,7 @@ export default function AuthForm() {
       alert("Login error: " + err.message);
     }
   }
+
 
   async function handleSignup() {
     if (!isValidEmail(signupEmail)) {

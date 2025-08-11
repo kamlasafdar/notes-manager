@@ -3,6 +3,8 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
+
+
 const router = express.Router();
 
 // Signup route
@@ -78,6 +80,11 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ message: "Server error during login." });
   }
 });
+
+
+
+
+
 
 
 export default router;
