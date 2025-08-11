@@ -54,18 +54,18 @@ router.get('/notes', authenticateToken, async (req, res) => {
 });
 // Delete note by ID
 router.delete('/notes/:id', authenticateToken, async (req, res) => {
-    console.log('hello in the deletion router');
+    // console.log('hello in the deletion router');
 
     const noteId = req.params.id;
     const userId = req.user.userId;
 
     console.log('Note ID as ObjectId:', new mongoose.Types.ObjectId(noteId));
-    console.log('User ID as ObjectId:', new mongoose.Types.ObjectId(userId));
+    // console.log('User ID as ObjectId:', new mongoose.Types.ObjectId(userId));
 
     try {
         const deletedNote = await Note.findOneAndDelete({
             _id: new mongoose.Types.ObjectId(noteId),
-            userId: new mongoose.Types.ObjectId(userId)
+            // userId: new mongoose.Types.ObjectId(userId)
         });
 
         if (!deletedNote) {
