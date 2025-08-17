@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { FaTrash, FaCheck, FaPlus } from "react-icons/fa";
 import toast, { Toaster } from "react-hot-toast";
 import "react-toastify/dist/ReactToastify.css";
+import { jwtDecode } from "jwt-decode";
 
 export default function NotesDashboard() {
   const [notes, setNotes] = useState([
@@ -46,6 +47,39 @@ export default function NotesDashboard() {
         notesContainerRef.current.scrollHeight;
     }
   }, [notes]);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      window.location.href = "/login"; // agar token hi nahi mila
+      return;
+    }
+
+    try {
+      const decoded = jwtDecode(token);
+      const currentTime = Date.now() / 1000; // seconds
+
+      if (decoded.exp < currentTime) {
+        // Token already expired
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+      } else {
+        // Auto logout jab exact expiry time aaye
+        const expiryTime = decoded.exp * 1000 - Date.now();
+
+        const timer = setTimeout(() => {
+          localStorage.removeItem("token");
+          window.location.href = "/login";
+        }, expiryTime);
+
+        // cleanup
+        return () => clearTimeout(timer);
+      }
+    } catch (error) {
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    }
+  }, []);
 
   const addNote = () => {
     lastActionRef.current = "add";
