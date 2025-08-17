@@ -15,13 +15,14 @@ cd backend
 ``` bash
 npm install express mongoose dotenv cors jsonwebtoken cloudinary multer multer-storage-cloudinary
 ```
-3. Create .env file in backend folder:
+3. ### Create `.env` file in `backend` folder
    PORT=5000
    MONGO_URI=your_mongodb_connection_string
    JWT_SECRET=your_jwt_secret
    CLOUDINARY_CLOUD_NAME=your_cloud_name
    CLOUDINARY_API_KEY=your_api_key
    CLOUDINARY_API_SECRET=your_api_secret
+   
 4.Run backend
 ``` bash
 node server.js
