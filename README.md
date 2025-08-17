@@ -1,5 +1,7 @@
 **Notes Manager App** 
+
 A simple MERN stack application for managing personal notes with secure JWT authentication.
+
 **How to Run the Project**
 1. Clone the Repository
 ``` bash
@@ -36,7 +38,7 @@ cd client
 ```
 2.Install libraries
 ``` bash
-npm install react-icons react-toastify react-hot-toast
+npm install react-icons react-toastify react-hot-toast jwt-decode
 ```
 3. Run frontend
 ``` bash
