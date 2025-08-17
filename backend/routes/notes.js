@@ -2,25 +2,76 @@ import express from 'express';
 import Note from '../models/Note.js';
 import { authenticateToken } from '../middleware/auth.js';
 import mongoose from 'mongoose';
+import multer from 'multer';
+import upload from "../middleware/multer.js";
+import cloudinary from "../config/cloudinary.js";
 
 
 const router = express.Router();
 
-// Create a new note
-router.post('/notes', authenticateToken, async (req, res) => {
+// // Create a new note (with optional image)
+// router.post('/notes', authenticateToken, upload.single('image'), async (req, res) => {
+//     console.log("POST /notes route hit");
+//     const { title, content } = req.body;
+//     const userId = req.user.userId; // from token
+
+//     try {
+//         let imageUrl = null;
+
+//         if (req.file) {
+//             const result = await cloudinary.uploader.upload(req.file.path);
+//             imageUrl = result.secure_url;
+//         }
+
+//         const newNote = new Note({ userId, title, content, image: imageUrl });
+//         const savedNote = await newNote.save();
+
+//         res.status(201).json(savedNote);
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ message: 'Failed to save note' });
+//     }
+// });
+
+// Create a new note (with optional image)
+router.post('/notes', authenticateToken, upload.single('image'), async (req, res) => {
     console.log("POST /notes route hit");
     const { title, content } = req.body;
     const userId = req.user.userId; // from token
 
     try {
-        const newNote = new Note({ userId, title, content });
+        let imageUrl = null;
+
+        if (req.file) {
+            // Upload image to Cloudinary using buffer
+            const streamUpload = (buffer) => {
+                return new Promise((resolve, reject) => {
+                    const stream = cloudinary.uploader.upload_stream(
+                        { folder: "notes_app" }, // optional: Cloudinary folder
+                        (error, result) => {
+                            if (result) resolve(result);
+                            else reject(error);
+                        }
+                    );
+                    stream.end(buffer);
+                });
+            };
+
+            const result = await streamUpload(req.file.buffer);
+            imageUrl = result.secure_url;
+        }
+
+        const newNote = new Note({ userId, title, content, image: imageUrl });
         const savedNote = await newNote.save();
+
         res.status(201).json(savedNote);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Failed to save note' });
     }
 });
+
+
 
 // Update note
 router.put('/notes/:id', authenticateToken, async (req, res) => {
